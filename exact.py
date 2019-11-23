@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET, sys
 from graph import Graph
+from time import time
 
 e = []
 varS = []
@@ -78,7 +79,6 @@ while j < len(varS):
             varS.insert(1,stuff)
             j = 0
     j += 1
-print(varS)
 
 newDict = dict()
 for i in range(len(fgList)):
@@ -101,7 +101,6 @@ for i in range(len(fgList)):
         newDict[frozenset(List)] = defList[i][j]
         j += 1
     i += 1
-print(newDict)
 
 def finde(var, e):
     if var in e:
@@ -155,5 +154,8 @@ def enumerationAsk(X, varS, e):
     Q["!"+X] = enumerateAll(list(varS), e+["!"+X])
     return normalize(Q)
 
-
-print(enumerationAsk(X, varS, e))
+t = time()
+print("")
+print("Result:", enumerationAsk(X, varS, e))
+print("Calculated in %.1fs" % (time() - t))
+print("")

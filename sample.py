@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET, sys, random
 from graph import Graph
+from time import time
 
 e = []
 varS = []
@@ -89,7 +90,6 @@ while j < len(varS):
 i = 0
 while 1:
     flag = 0
-    print(flag)
     while i < len(varS) - 1:
         var = bn.findParent(varS[i])
         if var:
@@ -103,8 +103,6 @@ while 1:
             i += 1
     if flag == 0:
         break
-
-print(varS)
 
 newDict = dict()
 for i in range(len(fgList)):
@@ -127,7 +125,6 @@ for i in range(len(fgList)):
         newDict[frozenset(List)] = defList[i][j]
         j += 1
     i += 1
-print(newDict)
 
 def priorSample(sortedGraph):
     sample = []
@@ -178,16 +175,29 @@ def normalize(Q):
 
 def rejectionSampling(X, e, sortedGraph, N):
     Q = {}
-    for i in range(1, N):
+    reject = 0
+    accept = 0
+    for i in range(1, N + 1):
         sample = priorSample(list(sortedGraph))
         if not consistent(sample, e):
+            reject += 1
             continue
         if X in sample:
             Q[X] = Q.get(X,0) + 1
+            accept += 1
         elif "!"+X in sample:
             Q["!"+X] = Q.get("!"+X,0) + 1
-    return normalize(Q)
+            accept += 1
+    return normalize(Q), accept, reject
 
-print(rejectionSampling(X, e, list(varS), N))
+t = time()
+result = rejectionSampling(X, e, list(varS), N)
+print("")
+print("Result:", result[0])
+rate = result[1] / result[2]
+print("Accept:", result[1], "Reject:", result[2])
+print("Acception Rate:", rate)
+print("Calculated in %.1fs" % (time() - t))
+print("")
 
 
