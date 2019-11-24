@@ -80,6 +80,24 @@ while j < len(varS):
             j = 0
     j += 1
 
+# sort the list topologically
+i = 0
+while 1:
+    flag = 0
+    while i < len(varS) - 1:
+        var = bn.findParent(varS[i])
+        if var:
+            for stuff in var:
+                if stuff not in varS[:i]:
+                    varS[i], varS[i+1] = varS[i+1], varS[i]
+                    flag += 1      
+                    break
+            i += 1
+        else:
+            i += 1
+    if flag == 0:
+        break
+
 newDict = dict()
 for i in range(len(fgList)):
     counter = 2 ** len(fgList[i])  
@@ -130,12 +148,10 @@ def enumerateAll(varS, e):
     parent = list(bn.findParent(Y))
     parent = findParent(parent, e)
     y = finde(Y, e)
-    if y:
-        varS1 = list(varS)      
-        return findp(y, parent) * enumerateAll(varS1, e)
+    if y:    
+        return findp(y, parent) * enumerateAll(list(varS), e)
     else:
-        varS2, varS3 = list(varS), list(varS)
-        return findp(Y, parent) * enumerateAll(varS2, e+[Y]) + findp("!"+Y, parent) * enumerateAll(varS3, e+["!"+Y])
+        return findp(Y, parent) * enumerateAll(list(varS), e+[Y]) + findp("!"+Y, parent) * enumerateAll(list(varS), e+["!"+Y])
 
 def normalize(Q):
     List1 = []

@@ -149,7 +149,10 @@ def findParent(parent, e):
 
 def consistent(sample, e):
     for var in sample:
-        if "!" + var in e or (len(var) == 2 and var[1:] in e):
+        if "!" + var in e:
+            return False
+    for evidence in e:
+        if "!" + evidence in sample:
             return False
     return True
 
@@ -165,7 +168,7 @@ def normalize(Q):
             Q["!"+List1[0]] = 0
         elif len(List1[0]) == 2:
             Q[List1[0][1:]] = 0       
-        return "No Sample"
+        return "Sample Not Enough"
     elif len(List1) == 0:
         return Q
     alpha = 1/(List2[0]+List2[1])
@@ -194,7 +197,7 @@ t = time()
 result = rejectionSampling(X, e, list(varS), N)
 print("")
 print("Result:", result[0])
-rate = result[1] / result[2]
+rate = result[1] / (result[1] + result[2])
 print("Accept:", result[1], "Reject:", result[2])
 print("Acception Rate:", rate)
 print("Calculated in %.1fs" % (time() - t))
