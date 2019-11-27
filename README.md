@@ -31,9 +31,3 @@ python3 sample.py 10000 aima-wet-grass.xml R S true W true
 python3 exact.py dog-problem.xml light-on bowel-problem true hear-bark true
 python3 sample.py 500000 dog-problem.xml light-on bowel-problem true hear-bark true
 ```
-
-## Contributers:
-    1. Name: Jiyun Xu
-       NetID: 31425711
-    2. Name: Yangyang Shao
-       NetID: 31434102
